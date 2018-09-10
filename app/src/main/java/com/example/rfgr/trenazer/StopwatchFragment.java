@@ -1,6 +1,7 @@
 package com.example.rfgr.trenazer;
 
 import android.os.Handler;
+import android.widget.Button;
 import android.widget.TextView;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class StopwatchFragment extends Fragment {
+public class StopwatchFragment extends Fragment implements View.OnClickListener {
     private int seconds = 0; //zmienna wartość zmierzonych sekund
     private boolean running; //zmienna informująca czy stoper działa
     private boolean wasRunning; //zmienna informująca czy stoper działał
@@ -31,7 +32,28 @@ public class StopwatchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_stopwatch, container, false);
         runTimer(layout);
+        Button startButton = (Button) layout.findViewById(R.id.start_button);
+        startButton.setOnClickListener(this);
+        Button stopButton = (Button) layout.findViewById(R.id.stop_button);
+        stopButton.setOnClickListener(this);
+        Button resetButton = (Button) layout.findViewById(R.id.reset_button);
+        resetButton.setOnClickListener(this);
         return layout;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.start_button:
+                onClickStart(v);
+                break;
+            case R.id.stop_button:
+                onClickStop(v);
+                break;
+            case R.id.reset_button:
+                onClickReset(v);
+                break;
+        }
     }
 
     @Override
@@ -53,6 +75,10 @@ public class StopwatchFragment extends Fragment {
         savedInstanceState.putInt("seconds", seconds);
         savedInstanceState.putBoolean("running", running);
         savedInstanceState.putBoolean("wasRunning", wasRunning);
+    }
+
+    public void onClickStart (View view) {
+        running = true;
     }
 
     public void onClickStop (View view) {
